@@ -1,2 +1,6 @@
+# typescript / javascript
 **/dist/
 **/node_modules/
+
+# golang
+**/tmp
