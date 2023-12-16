@@ -1,11 +1,27 @@
-import http from "http";
+import { hedgehog } from './hedgehog'
 
-http
-  .createServer((req, res: http.ServerResponse) => {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.write("hello world!");
-    res.end();
+const main = async () => {
+  // wallet is an `ethereumjs-wallet` object that can be used to sign transactions
+  let wallet = null
+
+  try {
+    if (hedgehog.isLoggedIn()) {
+      wallet = hedgehog.getWallet()
+    } else {
+      wallet = await hedgehog.signUp('username', 'password')
+    }
+  } catch (e) {
+    console.error(e)
+  }
+
+  console.log({ wallet })
+}
+
+main()
+  .then(() => {
+    process.exit(0)
   })
-  .listen(8080);
-
-console.log("Server running at port 8080");
+  .catch((e) => {
+    console.error(e)
+    process.exit(1)
+  })
